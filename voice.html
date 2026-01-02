@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexGen | Voice</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+
+<body>
+    <div class="ambient-light"></div>
+
+    <header style="position: fixed; top: 0; width: 100%; padding: 2rem 0; z-index: 100; backdrop-filter: blur(5px);">
+        <nav class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="index.html" class="logo"
+                style="text-decoration: none; font-weight: 800; font-size: 1.5rem; letter-spacing: -0.5px; color: var(--text-primary);">
+                wannabe <span class="gradient-text">crazy lover</span>
+            </a>
+            <div class="nav-links" style="display: flex; gap: 2rem; color: var(--text-secondary);">
+                <a href="index.html"
+                    style="color: inherit; text-decoration: none; font-weight: 500; transition: color 0.3s;">Home</a>
+                <a href="gallery.html"
+                    style="color: inherit; text-decoration: none; font-weight: 500; transition: color 0.3s;">Gallery</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container" style="padding-top: 8rem; padding-bottom: 4rem; text-align: center;">
+        <h1 class="gradient-text" style="font-size: 3rem; margin-bottom: 2rem;">Voice</h1>
+
+        <div id="audio-player-container" class="animate-fade-in"
+            style="max-width: 600px; margin: 0 auto; background: var(--glass-bg); padding: 2rem; border-radius: var(--border-radius-lg); border: 1px solid var(--glass-border); backdrop-filter: blur(10px); opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; position: relative;">
+
+            <div id="track-info" style="margin-bottom: 1.5rem;">
+                <h2 id="track-name"
+                    style="font-size: 1.5rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">
+                    Select a track</h2>
+                <p id="track-time" style="color: var(--text-secondary); font-family: monospace;">00:00 / 00:00</p>
+            </div>
+
+            <div id="controls"
+                style="display: flex; align-items: center; justify-content: center; gap: 2rem; margin-bottom: 1.5rem;">
+                <button id="prev-btn" class="btn-control"
+                    style="background: none; border: none; color: var(--text-secondary); cursor: pointer; transition: color 0.3s;">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                        <line x1="5" y1="19" x2="5" y2="5"></line>
+                    </svg>
+                </button>
+
+                <button id="play-pause-btn" class="btn-primary"
+                    style="width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                    <svg id="play-icon" viewBox="0 0 24 24" width="32" height="32" fill="currentColor" stroke="none">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <svg id="pause-icon" viewBox="0 0 24 24" width="32" height="32" fill="currentColor" stroke="none"
+                        style="display: none;">
+                        <rect x="6" y="4" width="4" height="16"></rect>
+                        <rect x="14" y="4" width="4" height="16"></rect>
+                    </svg>
+                </button>
+
+                <button id="next-btn" class="btn-control"
+                    style="background: none; border: none; color: var(--text-secondary); cursor: pointer; transition: color 0.3s;">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                        <line x1="19" y1="5" x2="19" y2="19"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div id="progress-container"
+                style="width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; cursor: pointer; position: relative;">
+                <div id="progress-bar"
+                    style="width: 0%; height: 100%; background: var(--gradient-main); border-radius: 3px; position: relative;">
+                    <div
+                        style="position: absolute; right: -6px; top: 50%; transform: translateY(-50%); width: 12px; height: 12px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="pinned-playlist"
+            style="margin-top: 1.5rem; border-top: 1px solid var(--glass-border); padding-top: 1.5rem; display: flex; text-align: left; flex-direction: column; gap: 0.5rem; max-height: 200px; overflow-y: auto; margin-bottom: 2rem;">
+            <h3 style="color: var(--text-primary); font-size: 1.2rem; margin-bottom: 0.5rem; padding-left: 0.5rem;">
+                Pinned</h3>
+            <!-- Pinned Tracks loaded here -->
+        </div>
+
+        <div id="playlist"
+            style="margin-top: 1.5rem; border-top: 1px solid var(--glass-border); padding-top: 1.5rem; display: flex; text-align: left; flex-direction: column; gap: 0.5rem; max-height: 300px; overflow-y: auto;">
+            <h3 style="color: var(--text-primary); font-size: 1.2rem; margin-bottom: 0.5rem; padding-left: 0.5rem;">
+                Tracks</h3>
+            <!-- Tracks loaded here -->
+        </div>
+        </div>
+
+
+
+        <audio id="audio-element" style="display: none;"></audio>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', async () => {
+                const audio = document.getElementById('audio-element');
+                const playPauseBtn = document.getElementById('play-pause-btn');
+                const playIcon = document.getElementById('play-icon');
+                const pauseIcon = document.getElementById('pause-icon');
+                const progressBar = document.getElementById('progress-bar');
+                const progressContainer = document.getElementById('progress-container');
+                const trackNameEl = document.getElementById('track-name');
+                const trackTimeEl = document.getElementById('track-time');
+                const prevBtn = document.getElementById('prev-btn');
+                const nextBtn = document.getElementById('next-btn');
+                const playlist = document.getElementById('playlist');
+
+
+                const pinnedPlaylist = document.getElementById('pinned-playlist');
+
+                let tracks = [];
+                let pinnedTracks = []; // Separate array for pinned
+                let currentTrackIndex = 0;
+                let isPlayingPinned = false; // Track context
+
+                // Load Tracks
+                try {
+                    const [tracksRes, pinnedRes] = await Promise.all([
+                        fetch('gallery/tracks.json?t=' + Date.now()),
+                        fetch('gallery/voice_pinned.json?t=' + Date.now())
+                    ]);
+
+                    if (tracksRes.ok) tracks = await tracksRes.json();
+                    if (pinnedRes.ok) pinnedTracks = await pinnedRes.json();
+
+                    if (tracks.length > 0 || pinnedTracks.length > 0) {
+                        // Default to first pinned if available, else first regular
+                        if (pinnedTracks.length > 0) {
+                            loadTrack(0, true, false); // index, isPinned, play
+                        } else {
+                            loadTrack(0, false, false);
+                        }
+                        renderPlaylists();
+                    } else {
+                        trackNameEl.textContent = "No audio files found.";
+                        if (playlist) playlist.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Add files to gallery/voice/</p>';
+                    }
+                } catch (e) {
+                    console.error("Failed to load tracks", e);
+                    trackNameEl.textContent = "Error loading tracks.";
+                }
+
+                function loadTrack(index, isPinnedContext, play = false) {
+                    let collection = isPinnedContext ? pinnedTracks : tracks;
+                    if (index < 0 || index >= collection.length) return;
+
+                    currentTrackIndex = index;
+                    isPlayingPinned = isPinnedContext;
+                    const track = collection[index];
+
+                    // Allow both string filenames and object data
+                    const src = typeof track === 'string' ? track : track.name;
+                    // Determine folder based on context
+                    const folder = isPinnedContext ? 'gallery/voice2' : 'gallery/voice';
+                    audio.src = `${folder}/${encodeURIComponent(src)}`;
+
+                    trackNameEl.textContent = src.replace(/\.[^/.]+$/, ""); // Remove extension
+
+                    // Explicitly disable browser autoplay behavior
+                    audio.autoplay = false;
+
+                    if (play) {
+                        const playPromise = audio.play();
+                        if (playPromise !== undefined) {
+                            playPromise.catch(e => console.log("Auto-play prevented:", e));
+                        }
+                        updatePlayIcon(true);
+                    } else {
+                        audio.pause();
+                        audio.currentTime = 0; // Reset to start
+                        updatePlayIcon(false);
+                    }
+
+                    renderPlaylists(); // Refresh list to show active track
+                }
+
+                function updatePlayIcon(isPlaying) {
+                    if (isPlaying) {
+                        playIcon.style.display = 'none';
+                        pauseIcon.style.display = 'block';
+                    } else {
+                        playIcon.style.display = 'block';
+                        pauseIcon.style.display = 'none';
+                    }
+                }
+
+                function renderPlaylists() {
+                    renderList(pinnedPlaylist, pinnedTracks, true);
+                    renderList(playlist, tracks, false);
+                }
+
+                function renderList(container, list, isPinnedList) {
+                    if (!container) return;
+                    // Keep header if present (simplest way is to clear and re-add or just append items to a sub-container, but let's just clear and rebuild for simplicity, preserving the header manually if needed or just assuming it's part of the structure we wipe. Wait, previous replacement included <h3> inside the div. So clearing innerHTML wipes it. Better to have a content div inside.)
+
+                    // Actually, let's just rebuild the whole innerHTML including header
+                    const title = isPinnedList ? 'Pinned' : 'Tracks';
+                    container.innerHTML = `<h3 style="color: var(--text-primary); font-size: 1.2rem; margin-bottom: 0.5rem; padding-left: 0.5rem;">${title}</h3>`;
+
+                    if (list.length === 0) {
+                        container.innerHTML += `<p style="padding: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;">No ${title.toLowerCase()} found.</p>`;
+                        return;
+                    }
+
+                    list.forEach((track, i) => {
+                        const name = typeof track === 'string' ? track : track.name;
+                        const src = typeof track === 'string' ? track : track.name;
+                        const folder = isPinnedList ? 'gallery/voice2' : 'gallery/voice';
+                        const encodedSrc = `${folder}/${encodeURIComponent(src)}`;
+
+                        const isActive = (isPinnedList === isPlayingPinned) && (i === currentTrackIndex);
+
+                        const item = document.createElement('div');
+                        item.className = 'playlist-item';
+                        item.style.padding = '0.75rem 1rem';
+                        item.style.marginTop = '0.5rem';
+                        item.style.background = isActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent';
+                        item.style.borderRadius = 'var(--border-radius-md)';
+                        item.style.display = 'flex';
+                        item.style.justifyContent = 'space-between';
+                        item.style.alignItems = 'center';
+                        item.style.transition = 'all 0.2s ease';
+                        item.style.color = isActive ? 'var(--text-primary)' : 'var(--text-secondary)';
+
+                        // Track Info Container
+                        const infoDiv = document.createElement('div');
+                        infoDiv.style.display = 'flex';
+                        infoDiv.style.alignItems = 'center';
+                        infoDiv.style.gap = '0.75rem';
+                        infoDiv.style.fontSize = '0.9rem';
+                        infoDiv.style.cursor = 'pointer';
+                        infoDiv.style.flex = '1';
+
+                        infoDiv.innerHTML = `
+                            <div style="opacity: ${isActive ? 1 : 0.5}; width: 16px;">
+                                ${isActive ?
+                                '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>' :
+                                '<span style="font-size: 0.8rem;">' + (i + 1) + '</span>'}
+                            </div>
+                            <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${name.replace(/\.[^/.]+$/, "")}</span>
+                        `;
+
+                        // Click to play
+                        infoDiv.onclick = (e) => {
+                            e.stopPropagation();
+                            loadTrack(i, isPinnedList, true);
+                        };
+
+                        // Download Button
+                        const downloadBtn = document.createElement('a');
+                        downloadBtn.href = encodedSrc;
+                        downloadBtn.download = src;
+                        downloadBtn.style.color = 'var(--text-secondary)';
+                        downloadBtn.style.opacity = '0.6';
+                        downloadBtn.style.marginLeft = '1rem';
+                        downloadBtn.style.transition = 'opacity 0.2s';
+                        downloadBtn.innerHTML = `
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                        `;
+                        downloadBtn.onmouseenter = () => downloadBtn.style.opacity = '1';
+                        downloadBtn.onmouseleave = () => downloadBtn.style.opacity = '0.6';
+                        downloadBtn.onclick = (e) => e.stopPropagation(); // Just download
+
+                        item.appendChild(infoDiv);
+                        item.appendChild(downloadBtn);
+
+                        item.onmouseenter = () => { if (!isActive) item.style.background = 'rgba(255, 255, 255, 0.05)'; };
+                        item.onmouseleave = () => { if (!isActive) item.style.background = 'transparent'; };
+
+                        container.appendChild(item);
+                    });
+                }
+
+
+
+                // Controls
+                playPauseBtn.onclick = () => {
+                    if (audio.paused) {
+                        audio.play();
+                        updatePlayIcon(true);
+                    } else {
+                        audio.pause();
+                        updatePlayIcon(false);
+                    }
+                };
+
+                prevBtn.onclick = () => {
+                    let collection = isPlayingPinned ? pinnedTracks : tracks;
+                    let newIndex = currentTrackIndex - 1;
+                    if (newIndex < 0) newIndex = collection.length - 1;
+                    loadTrack(newIndex, isPlayingPinned, true);
+                };
+
+                nextBtn.onclick = () => {
+                    let collection = isPlayingPinned ? pinnedTracks : tracks;
+                    let newIndex = currentTrackIndex + 1;
+                    if (newIndex >= collection.length) newIndex = 0;
+                    loadTrack(newIndex, isPlayingPinned, true);
+                };
+
+                // Time & Progress
+                audio.addEventListener('timeupdate', () => {
+                    const { currentTime, duration } = audio;
+                    if (isNaN(duration)) return;
+
+                    const percent = (currentTime / duration) * 100;
+                    progressBar.style.width = `${percent}%`;
+
+                    trackTimeEl.textContent = `${formatTime(currentTime)} / ${formatTime(duration)}`;
+                });
+
+                audio.addEventListener('ended', () => {
+                    // Auto play next
+                    let collection = isPlayingPinned ? pinnedTracks : tracks;
+                    let newIndex = currentTrackIndex + 1;
+                    if (newIndex >= collection.length) newIndex = 0;
+                    loadTrack(newIndex, isPlayingPinned, true);
+                });
+
+                function formatTime(seconds) {
+                    const min = Math.floor(seconds / 60);
+                    const sec = Math.floor(seconds % 60);
+                    return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+                }
+
+                // Seek
+                progressContainer.onclick = (e) => {
+                    const width = progressContainer.clientWidth;
+                    const clickX = e.offsetX;
+                    const duration = audio.duration;
+                    if (isNaN(duration)) return;
+
+                    audio.currentTime = (clickX / width) * duration;
+                };
+
+                // Trigger Fade In
+                requestAnimationFrame(() => {
+                    const playerContainer = document.getElementById('audio-player-container');
+                    if (playerContainer) {
+                        playerContainer.style.opacity = '1';
+                        playerContainer.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+        </script>
+    </main>
+
+    <script src="main.js"></script>
+
+    <!-- Flower Decorations (Same as other pages) -->
+    <div class="flower-decorations">
+        <svg class="flower-left" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+            <g class="flower-interactive">
+                <path class="flower-stem" d="M40,300 Q60,200 40,150" />
+                <path class="flower-petal"
+                    d="M40,150 C10,120 10,180 40,150 M40,150 C70,120 70,180 40,150 M40,150 C40,110 10,110 40,150 M40,150 C40,110 70,110 40,150" />
+                <text x="40" y="130" class="flower-text">koffee</text>
+            </g>
+
+            <g class="flower-interactive">
+                <path class="flower-stem" d="M100,300 Q90,220 120,160" />
+                <path class="flower-petal"
+                    d="M120,160 C90,130 90,190 120,160 M120,160 C150,130 150,190 120,160 M120,160 C120,120 90,120 120,160 M120,160 C120,120 150,120 120,160" />
+                <text x="120" y="200" class="flower-text">honeypie</text>
+            </g>
+
+            <g class="flower-interactive">
+                <path class="flower-stem" d="M70,300 Q80,260 70,240" />
+                <path class="flower-petal" d="M70,240 C55,225 55,255 70,240 M70,240 C85,225 85,255 70,240" />
+                <text x="70" y="270" class="flower-text">sweet sugar bun</text>
+            </g>
+        </svg>
+
+        <svg class="flower-right" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+            <g class="flower-interactive">
+                <path class="flower-stem" d="M150,300 Q130,220 160,140" />
+                <path class="flower-petal"
+                    d="M160,140 C130,110 130,170 160,140 M160,140 C190,110 190,170 160,140 M160,140 C160,100 130,100 160,140 M160,140 C160,100 190,100 160,140" />
+                <text x="160" y="120" class="flower-text">angry bird</text>
+            </g>
+
+            <g class="flower-interactive">
+                <path class="flower-stem" d="M100,300 Q120,240 90,180" />
+                <path class="flower-petal"
+                    d="M90,180 C60,150 60,210 90,180 M90,180 C120,150 120,210 90,180 M90,180 C90,140 60,140 90,180 M90,180 C90,140 120,140 90,180" />
+                <text x="90" y="220" class="flower-text">beauty personified</text>
+            </g>
+        </svg>
+    </div>
+</body>
+
+</html>
