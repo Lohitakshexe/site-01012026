@@ -123,7 +123,7 @@
                             </svg>
                         </button>
                         <div class="message-header">
-                            <div class="message-author" style="background: none; -webkit-background-clip: unset; background-clip: unset; -webkit-text-fill-color: currentColor; color: ${authorColor}; text-shadow: 0 0 15px ${authorColor}60;">${escapeHtml(data.sender || 'Anonymous')}</div>
+                            <div class="message-author" style="background: none; -webkit-background-clip: unset; background-clip: unset; -webkit-text-fill-color: currentColor; color: ${authorColor}; text-shadow: 0 0 1px rgba(255,255,255,0.1);">${escapeHtml(data.sender || 'Anonymous')}</div>
                             <div class="message-date">${dateStr}</div>
                         </div>
                         <div class="message-content">${escapeHtml(data.content || '')}</div>
@@ -216,16 +216,20 @@
                 hash = ((hash << 5) + hash) + str.charCodeAt(i); /* hash * 33 + c */
             }
 
-            // Allow negative hash to become positive, multiply by prime to spread similar strings
-            const positiveHash = Math.abs(hash * 132049);
+            // Custom Palette provided by user
+            const palette = [
+                '#221f1f',
+                '#242726',
+                '#2e3233',
+                '#263238',
+                '#26324a'
+            ];
 
-            // Hue: Use golden angle approximation to spread colors evenly
-            const h = positiveHash % 360;
-            // Darker Colors: Saturation 70-100%, Lightness 45-60%
-            const s = 70 + (positiveHash % 30);
-            const l = 45 + (positiveHash % 15);
+            // Allow negative hash to become positive
+            const positiveHash = Math.abs(hash);
 
-            return `hsl(${h}, ${s}%, ${l}%)`;
+            // return color from palette
+            return palette[positiveHash % palette.length];
         }
     </script>
 
