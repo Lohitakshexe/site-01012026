@@ -112,6 +112,8 @@
                 const date = data.timestamp ? data.timestamp.toDate() : new Date();
                 const dateStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+                const authorColor = stringToColor(data.sender || 'Anonymous');
+
                 return `
                     <div class="message-card">
                         <button class="delete-btn" data-id="${docSnapshot.id}" title="Delete Message">
@@ -121,7 +123,7 @@
                             </svg>
                         </button>
                         <div class="message-header">
-                            <div class="message-author">${escapeHtml(data.sender || 'Anonymous')}</div>
+                            <div class="message-author" style="background: none; -webkit-text-fill-color: initial; color: ${authorColor}; text-shadow: 0 0 10px ${authorColor}40;">${escapeHtml(data.sender || 'Anonymous')}</div>
                             <div class="message-date">${dateStr}</div>
                         </div>
                         <div class="message-content">${escapeHtml(data.content || '')}</div>
@@ -205,6 +207,18 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        function stringToColor(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            // Generate HSL: Hue = hash % 360, Saturation = 70-100%, Lightness = 65-75% (for dark mode visibility)
+            const h = Math.abs(hash % 360);
+            const s = 80 + (Math.abs(hash) % 20);
+            const l = 70 + (Math.abs(hash) % 10);
+            return `hsl(${h}, ${s}%, ${l}%)`;
         }
     </script>
 
