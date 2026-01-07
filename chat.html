@@ -123,7 +123,7 @@
                             </svg>
                         </button>
                         <div class="message-header">
-                            <div class="message-author" style="background: none; -webkit-text-fill-color: initial; color: ${authorColor}; text-shadow: 0 0 10px ${authorColor}40;">${escapeHtml(data.sender || 'Anonymous')}</div>
+                            <div class="message-author" style="background: none; -webkit-background-clip: unset; background-clip: unset; -webkit-text-fill-color: currentColor; color: ${authorColor}; text-shadow: 0 0 15px ${authorColor}60;">${escapeHtml(data.sender || 'Anonymous')}</div>
                             <div class="message-date">${dateStr}</div>
                         </div>
                         <div class="message-content">${escapeHtml(data.content || '')}</div>
@@ -211,13 +211,19 @@
 
         function stringToColor(str) {
             let hash = 0;
+            // DJB2 Hash (better distribution)
             for (let i = 0; i < str.length; i++) {
-                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+                hash = ((hash << 5) + hash) + str.charCodeAt(i); /* hash * 33 + c */
             }
-            // Generate HSL: Hue = hash % 360, Saturation = 70-100%, Lightness = 65-75% (for dark mode visibility)
-            const h = Math.abs(hash % 360);
-            const s = 80 + (Math.abs(hash) % 20);
-            const l = 70 + (Math.abs(hash) % 10);
+
+            // Allow negative hash to become positive, multiply by prime to spread similar strings
+            const positiveHash = Math.abs(hash * 132049);
+
+            // Hue: Use golden angle approximation to spread colors evenly
+            const h = positiveHash % 360;
+            const s = 75 + (positiveHash % 25); // 75-100% Saturation
+            const l = 65 + (positiveHash % 15); // 65-80% Lightness
+
             return `hsl(${h}, ${s}%, ${l}%)`;
         }
     </script>
