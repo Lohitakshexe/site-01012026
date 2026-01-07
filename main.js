@@ -1,4 +1,4 @@
-console.log('NexGen System Initialized');
+console.log('wannabe crazy lover System Initialized');
 
 // Lock scroll during intro
 document.body.style.overflow = 'hidden';
