@@ -221,8 +221,9 @@
 
             // Hue: Use golden angle approximation to spread colors evenly
             const h = positiveHash % 360;
-            const s = 75 + (positiveHash % 25); // 75-100% Saturation
-            const l = 65 + (positiveHash % 15); // 65-80% Lightness
+            // Darker Colors: Saturation 70-100%, Lightness 45-60%
+            const s = 70 + (positiveHash % 30);
+            const l = 45 + (positiveHash % 15);
 
             return `hsl(${h}, ${s}%, ${l}%)`;
         }
