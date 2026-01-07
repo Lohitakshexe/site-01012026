@@ -216,11 +216,11 @@
                 hash = ((hash << 5) + hash) + str.charCodeAt(i); /* hash * 33 + c */
             }
 
-            // Custom Palette provided by user (Grayscale)
+            // Custom Palette extracted from user image
             const palette = [
-                '#333333', // Very Dark
-                '#888888', // Mid
-                '#EEEEEE'  // Very Light
+                '#555555', // Dark Grey
+                '#888888', // Medium Grey
+                '#B0B0B0'  // Light Grey
             ];
 
             // Allow negative hash to become positive
