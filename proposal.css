@@ -979,28 +979,6 @@ body {
     visibility: visible !important;
 }
 
-/* --- EMERGENCY VISIBILITY OVERRIDES --- */
-#proposal-flow {
-    display: none;
-    /* JS toggles this */
-    opacity: 0;
-    z-index: 99999 !important;
-}
-
-#proposal-flow[style*="display: block"] {
-    display: block !important;
-    opacity: 1 !important;
-}
-
-/* Force text visibility */
-.letter-box,
-.letter-text,
-.flow-section {
-    opacity: 1 !important;
-    visibility: visible !important;
-    display: block !important;
-    color: #ccccdd !important;
-}
 
 /* Ensure spacers don't hide content */
 .friction-spacer {
@@ -1097,6 +1075,7 @@ body {
     justify-content: center !important;
     align-items: center !important;
 }
+
 /* Confetti Particle */
 .confetti {
     position: fixed;
@@ -1106,4 +1085,117 @@ body {
     z-index: 9999;
     pointer-events: none;
     border-radius: 50%;
+}
+
+/* --- RECOVERY VISIBILITY OVERRIDES --- */
+
+/* Ensure the main container is on top and visible when active */
+#proposal-flow[style*="display: block"] {
+    display: block !important;
+    opacity: 1 !important;
+    z-index: 99999 !important;
+}
+
+/* Ensure sections use FLEX, not block, and are visible */
+.flow-section {
+    display: flex !important;
+    /* Fixes the 'block' bug while ensuring visibility */
+    opacity: 1 !important;
+    visibility: visible !important;
+    /* Maintain snap behavior */
+    scroll-snap-align: start;
+    scroll-snap-stop: always !important;
+}
+
+/* Ensure letter content is visible */
+.letter-box,
+.letter-text {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Drum and Question text still need to be hidden initially for JS reveal */
+/* But ensuring their containers are visible */
+.drumroll-section,
+.question-section {
+    display: flex !important;
+}
+
+/* --- CRITICAL FIXES --- */
+
+/* 1. Fix Confetti Visibility (Must be above Proposal Flow) */
+.confetti {
+    z-index: 200000 !important;
+    /* Higher than 99999 */
+}
+
+/* 2. Force Huge Text - REVERTED to Normal Big */
+.question-text {
+    font-size: 3.5rem !important;
+    text-shadow: 0 0 30px rgba(221, 102, 136, 0.8) !important;
+    line-height: 1.2 !important;
+}
+
+/* 3. Strict Centering Enforcement */
+.no-reason-section {
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0 !important;
+}
+
+.no-reason-section .letter-box {
+    margin: 0 auto !important;
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+}
+/* --- FIREBASE UI UPDATES --- */
+
+/* Reuse No Reason Styles for Comment Section */
+.comment-section {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(85, 51, 68, 0.98);
+    z-index: 100000; /* Same as No Section */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease;
+}
+
+.comment-section[style*="display: none"] {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.comment-section.active {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* Ensure Lists are Scrollable and Visible */
+#no-reasons-list, #yes-comments-list {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.3) transparent;
+}
+
+#btn-next-loop:hover {
+    transform: scale(1.2);
+    transition: transform 0.2s ease;
+}
+
+/* --- FRICTION BUFFERS --- */
+.buffer-section {
+    height: 70vh; /* Significant pause */
+    width: 100%;
+    scroll-snap-align: center; /* Snap to center of nothingness */
+    scroll-snap-stop: always;
+    background: transparent;
+    pointer-events: none;
 }

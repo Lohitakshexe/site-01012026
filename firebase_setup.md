@@ -32,3 +32,19 @@ To get the chat working, you need to provide your own "backend" keys. Don't worr
 
 ## 4. Done!
 Refresh your `community.html` page. The "Configuration Missing" error should be gone, and you can now chat!
+
+## 5. Maintenance: Update Security Rules (If Expired)
+If you see a warning about "Client access expiring", do this:
+1.  Go to **Build > Firestore Database > Rules** in Firebase Console.
+2.  Replace the existing rules with this (allows permanent public access):
+    ```
+    rules_version = '2';
+    service cloud.firestore {
+      match /databases/{database}/documents {
+        match /{document=**} {
+          allow read, write: if true;
+        }
+      }
+    }
+    ```
+3.  Click **Publish**.

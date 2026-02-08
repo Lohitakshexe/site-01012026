@@ -1,5 +1,20 @@
-console.log('wannabe crazy lover System Initialized - VERSION 3 - CONFETTI');
-alert('System Updated: Version 3');
+console.log('wannabe crazy lover System Initialized - VERSION 5 - FIREBASE INTEGRATED');
+
+// --- FIREBASE SETUP ---
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyB3wJAaup7xd_C1xX3NQTUnAOFduGFB-AA",
+    authDomain: "sh-chat01.firebaseapp.com",
+    projectId: "sh-chat01",
+    storageBucket: "sh-chat01.firebasestorage.app",
+    messagingSenderId: "604995349638",
+    appId: "1:604995349638:web:3df48c1026bd24857a3507"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 // Lock scroll during intro
 document.body.style.overflow = 'hidden';
@@ -12,59 +27,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainLogo = document.querySelector('#main-logo');
 
     // 1. Calculate positions for the morph
-    // We wait a bit for layout to settle (though it's fixed position)
     setTimeout(() => {
         if (!introText || !mainLogo) return;
 
         const logoRect = mainLogo.getBoundingClientRect();
         const textRect = introText.getBoundingClientRect();
 
-        // Calculate translation deltas
-        // Destination center - Source center
         const deltaX = (logoRect.left + logoRect.width / 2) - (textRect.left + textRect.width / 2);
         const deltaY = (logoRect.top + logoRect.height / 2) - (textRect.top + textRect.height / 2);
 
-        // Calculate scale factor (approximate based on height)
-        const scale = logoRect.height / textRect.height;
-        // Actually, let's just use translation and font-size transition if we can, 
-        // but transform is smoother.
-        // The logo font size is 1.5rem (~24px). Intro font size is 4rem (~64px).
-        // Scale ~ 24/64 = 0.375
-
-        // Trigger Animation
-        // We set the transform to the calculated delta
-        // We use a keyframe or just direct style transition
-
         introText.style.transition = 'all 1s cubic-bezier(0.76, 0, 0.24, 1)';
-        introText.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.35)`; // Tweaked scale
+        introText.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.35)`;
         introText.style.filter = 'blur(0px)';
 
-        // Fade out overlay bg but keep text
         introOverlay.style.transition = 'background-color 0.8s ease';
-        introOverlay.style.overflow = 'hidden'; // ensure no scrollbars appear during move
+        introOverlay.style.overflow = 'hidden';
         introOverlay.style.backgroundColor = 'transparent';
 
-        // After move completes
         setTimeout(() => {
             mainLogo.style.opacity = '1';
             mainLogo.style.transition = 'opacity 0.5s ease';
             introOverlay.style.opacity = '0';
             introOverlay.style.pointerEvents = 'none';
-            // Unlock scroll
             document.body.style.overflow = '';
         }, 1000);
 
-    }, 2000); // Wait for the initial 2s text reveal to finish/stabilize
+    }, 2000);
 
     // --- The Proposal Logic ---
     const proposalBtn = document.getElementById('proposal-btn');
     if (proposalBtn) {
-        console.log('Proposal button found, attaching listener');
-
-        // Force styles to ensure clickability
         proposalBtn.style.pointerEvents = 'auto';
         proposalBtn.style.cursor = 'pointer';
-        // Ensure container is above other elements
         const container = proposalBtn.closest('.proposal-container');
         if (container) {
             container.style.zIndex = '2000';
@@ -72,13 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         proposalBtn.addEventListener('click', (e) => {
-            console.log('Proposal button clicked!');
-            // 1. Create Ripple Element
             const ripple = document.createElement('div');
             ripple.classList.add('page-transition-ripple');
             document.body.appendChild(ripple);
 
-            // 2. Position Ripple at Button Center
             const rect = proposalBtn.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
@@ -86,17 +77,13 @@ document.addEventListener('DOMContentLoaded', () => {
             ripple.style.left = `${centerX}px`;
             ripple.style.top = `${centerY}px`;
 
-            // 3. Trigger Animation
-            // Use setTimeout to allow DOM reflow
             setTimeout(() => {
                 ripple.classList.add('active');
             }, 10);
 
-            // 4. Switch Theme and Clear Screen after animation covers screen
             setTimeout(() => {
                 document.body.classList.add('romantic-theme');
 
-                // Hide main content (excluding proposal flow)
                 const main = document.querySelector('main');
                 if (main) {
                     main.style.opacity = '0';
@@ -105,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         main.style.display = 'none';
                     }, 500);
 
-                    // Ensure header logo also fades
                     const header = document.querySelector('header');
                     if (header) {
                         header.style.opacity = '0';
@@ -113,25 +99,21 @@ document.addEventListener('DOMContentLoaded', () => {
                         setTimeout(() => { header.style.display = 'none'; }, 500);
                     }
 
-                    // Reveal Proposal Flow
                     setTimeout(() => {
                         const proposalFlow = document.getElementById('proposal-flow');
                         if (proposalFlow) {
                             proposalFlow.style.display = 'block';
-                            // Small delay to allow display block to apply before opacity transition
                             setTimeout(() => {
                                 proposalFlow.style.opacity = '1';
                                 proposalFlow.style.transition = 'opacity 1s ease';
                             }, 50);
 
-                            // Initialize Proposal Logic
                             initProposalFlow();
                         }
                     }, 500);
                 }
 
-            }, 600); // 0.6s match/slightly early to cover before full expansion ends (1.5s total)
-
+            }, 600);
         });
     }
 
@@ -145,12 +127,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let drumTriggered = false;
         let questionTriggered = false;
 
-        // Audio Context for Drumroll
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const audioCtx = new AudioContext();
 
         function playDrumroll() {
-            // Updated to use actual audio file
             const audio = new Audio('sfx/freesound_community-drum-roll-please-6921.mp3');
             audio.volume = 0.5;
             audio.play().catch(e => console.error("Audio playback failed:", e));
@@ -159,36 +139,26 @@ document.addEventListener('DOMContentLoaded', () => {
         flowContainer.addEventListener('scroll', () => {
             const height = window.innerHeight;
 
-            // Trigger Drumroll when it's mostly in view (Snap Point 2)
             const drumSection = document.getElementById('part-2-drumroll');
             if (drumSection) {
                 const rect = drumSection.getBoundingClientRect();
-                // Trigger when top is near middle of screen
                 if (rect.top < height * 0.6 && rect.bottom > height * 0.4 && !drumTriggered) {
                     drumTriggered = true;
-
-                    // Animation
                     drumEmoji.classList.add('jump-active');
                     drumEmoji.classList.add('buzz-active');
-
-                    // SFX
                     if (audioCtx.state === 'suspended') audioCtx.resume();
                     playDrumroll();
-
-                    // Show Text after delay
                     setTimeout(() => {
                         drumText.style.opacity = '1';
                     }, 1000);
                 }
             }
 
-            // Trigger Question when it's mostly in view (Snap Point 3)
             const questionSection = document.getElementById('part-3-question');
             if (questionSection) {
                 const rect = questionSection.getBoundingClientRect();
                 if (rect.top < height * 0.6 && !questionTriggered) {
                     questionTriggered = true;
-                    // Reveal
                     questionText.style.opacity = '1';
                     questionText.style.transform = 'scale(1)';
                     setTimeout(() => {
@@ -198,52 +168,68 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Button Logic
+        // --- BUTTON LOGIC ---
+
+        // 'No' Button Logic
         const btnNo = document.getElementById('btn-no');
         const noReasonSection = document.getElementById('part-no-reason');
         const questionSectionWrapper = document.querySelector('.question-container-wrapper');
 
+        // Listeners for "reasons"
+        const noReasonsListContainer = document.querySelector('#no-reasons-list .list-content');
+        if (noReasonsListContainer) {
+            setupFirebaseListener("reasons", noReasonsListContainer);
+        }
+
         if (btnNo) {
             btnNo.addEventListener('click', (e) => {
-                // Show "Why?" section
                 if (noReasonSection) {
-                    // Hide Question Section content
                     if (questionSectionWrapper) questionSectionWrapper.style.display = 'none';
-
                     noReasonSection.style.display = 'flex';
-                    // Force reflow
                     void noReasonSection.offsetWidth;
                     noReasonSection.classList.add('active');
-                    // Explicitly unnecessary to set opacity if class handles it, but keeping safe
                     noReasonSection.style.opacity = '1';
                 }
             });
         }
 
-        // No Reason Logic
         const btnSubmitReason = document.getElementById('btn-submit-reason');
         const btnSkipReason = document.getElementById('btn-skip-reason');
         const reasonInput = document.getElementById('no-reason-input');
 
         if (btnSubmitReason) {
-            btnSubmitReason.addEventListener('click', () => {
+            btnSubmitReason.addEventListener('click', async () => {
                 const text = reasonInput ? reasonInput.value.trim() : '';
-                // Word count estimation (split by spaces)
                 const wordCount = text.length > 0 ? text.split(/\s+/).length : 0;
 
-                if (wordCount < 1000) {
-                    alert(`Please fill in 1000 words. Current count: ${wordCount}`);
+                // Removed mandatory check for debugging, user can adjust
+                if (wordCount < 5 && wordCount > 0) {
+                    // alert warning? Nah, let them save.
+                }
+
+                if (text) {
+                    btnSubmitReason.innerText = "Saving...";
+                    try {
+                        await addDoc(collection(db, "reasons"), {
+                            content: text,
+                            timestamp: serverTimestamp()
+                        });
+                        alert("Reason saved to the archives.");
+                        btnSubmitReason.innerText = "Submitted";
+                        reasonInput.value = "";
+                    } catch (e) {
+                        alert("Error saving: " + e.message);
+                        btnSubmitReason.innerText = "Retry";
+                    }
                 } else {
-                    alert("Reason accepted... I guess. 🥺");
+                    alert("Please write something first.");
                 }
             });
         }
 
         if (btnSkipReason) {
             btnSkipReason.addEventListener('click', () => {
-                alert("you are being redirected to the previous page because unfortunately you love Lohitaksh");
-
-                // Redirect / Reset
+                alert("Redirecting...");
                 if (noReasonSection) {
                     noReasonSection.classList.remove('active');
                     noReasonSection.style.opacity = '0';
@@ -256,82 +242,166 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-        // Button Logic
+
+        // 'Yes' Button Logic
         const btnYes = document.getElementById('btn-yes');
+        const part5Comment = document.getElementById('part-5-comment');
+
+        // Listeners for "comments"
+        const yesCommentsListContainer = document.querySelector('#yes-comments-list .list-content');
+        if (yesCommentsListContainer) {
+            setupFirebaseListener("comments", yesCommentsListContainer);
+        }
+
+        const yesCommentInput = document.getElementById('yes-comment-input');
+        const btnSubmitComment = document.getElementById('btn-submit-comment');
+
         if (btnYes) {
             btnYes.addEventListener('click', (e) => {
-                // Trigger Confetti
                 createConfetti(e.clientX, e.clientY);
 
-                // Step 1: Change Text
-                const questionText = document.getElementById('question-text');
                 if (questionText) {
-                    // Use Fade out/in for stability
+                    questionText.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    questionText.style.transform = 'scale(0.8)';
                     questionText.style.opacity = '0';
+
                     setTimeout(() => {
-                        questionText.innerHTML = '<span class="text-gradient" style="font-size: 2rem;">You have subscribed to useless chitter chatter by <em>Mr. Lohitaksh Khatri</em>, we welcome you to the family</span>';
+                        // Change text
+                        // We add a 'next' button here
+                        questionText.innerHTML = `
+                            <span class="text-gradient" style="font-size: 2.5rem; line-height: 1.4;">
+                                You have subscribed to useless chitter chatter by <em>Mr. Lohitaksh Khatri</em>, we welcome you to the family
+                            </span>
+                            <div style="margin-top: 2rem;">
+                                <button id="btn-next-loop" style="background: none; border: none; font-size: 3rem; cursor: pointer; color: #fff; animation: bounce 2s infinite;">→</button>
+                            </div>
+                        `;
+
+                        questionText.style.transform = 'scale(1)';
                         questionText.style.opacity = '1';
+
+                        // Attach Next Button Listener NOW (since element just created)
+                        setTimeout(() => {
+                            const btnNext = document.getElementById('btn-next-loop');
+                            if (btnNext) {
+                                btnNext.addEventListener('click', () => {
+                                    // Hide Question Text
+                                    questionText.style.opacity = '0';
+
+                                    if (part5Comment) {
+                                        part5Comment.style.display = 'flex';
+                                        void part5Comment.offsetWidth;
+                                        part5Comment.style.opacity = '1';
+                                        part5Comment.classList.add('active'); // active class for pointer events
+                                    }
+                                    if (questionSectionWrapper) {
+                                        // Hide the wrapper but keep spacing?
+                                        // Actually better to hide the text logic
+                                    }
+                                });
+                            }
+                        }, 100);
+
                     }, 500);
                 }
 
-                // Step 2: Change Buttons
+                // Hide buttons
                 const btnContainer = document.querySelector('.question-buttons');
                 if (btnContainer) {
-                    btnContainer.style.opacity = '0'; // Fade out buttons
-                    setTimeout(() => {
-                        btnContainer.innerHTML = ''; // Clear existing buttons
+                    btnContainer.style.opacity = '0';
+                    setTimeout(() => btnContainer.style.display = 'none', 500);
+                }
+            });
+        }
 
-                        const gugGudBtn = document.createElement('button');
-                        gugGudBtn.className = 'btn btn-yes'; // Keep same style
-                        gugGudBtn.innerText = 'gug gud';
-                        gugGudBtn.style.transform = 'scale(1)';
-
-                        gugGudBtn.addEventListener('click', () => {
-                            // Step 3: Final Message
-                            if (questionText) {
-                                questionText.style.opacity = '0';
-                                setTimeout(() => {
-                                    // Use a span for the emoji to protect it from background-clip: text
-                                    // Ensure the text matches the theme
-                                    questionText.innerHTML = '<span class="text-gradient" style="font-size: 3rem;">there is no way out of this family</span> <span class="emoji-fix" style="font-size: 3rem;">😈</span>';
-                                    questionText.style.opacity = '1';
-                                }, 500);
-                            }
-                            gugGudBtn.style.display = 'none'; // Hide button after click
+        // Handle Yes Comment Submit
+        if (btnSubmitComment) {
+            btnSubmitComment.addEventListener('click', async () => {
+                const text = yesCommentInput ? yesCommentInput.value.trim() : '';
+                if (text) {
+                    btnSubmitComment.innerText = "Saving...";
+                    try {
+                        await addDoc(collection(db, "comments"), {
+                            content: text,
+                            timestamp: serverTimestamp()
                         });
-
-                        btnContainer.appendChild(gugGudBtn);
-                        btnContainer.style.opacity = '1'; // Fade in new button
-                    }, 500);
+                        alert("Saved! 😎");
+                        yesCommentInput.value = "";
+                        btnSubmitComment.innerText = "Saved";
+                    } catch (e) {
+                        alert("Error saving: " + e.message);
+                        btnSubmitComment.innerText = "Retry";
+                    }
+                } else {
+                    alert("Say something!");
                 }
             });
         }
 
     } // End initProposalFlow
 
+    // --- FIREBASE HELPER FUNCTIONS ---
+
+    function setupFirebaseListener(collectionName, containerElement) {
+        // Simple Real-time Listener
+        const q = query(collection(db, collectionName), orderBy("timestamp", "desc"), limit(20));
+
+        onSnapshot(q, (snapshot) => {
+            if (snapshot.empty) {
+                containerElement.innerHTML = "No inputs yet.";
+                return;
+            }
+            const html = snapshot.docs.map(docSnapshot => {
+                const data = docSnapshot.data();
+                const safeContent = escapeHtml(data.content); // Use basic escape
+                return `<div style="padding: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 0.5rem; word-break: break-word;">
+                            "${safeContent}"
+                        </div>`;
+            }).join('');
+            containerElement.innerHTML = html;
+        });
+    }
+
+    function escapeHtml(text) {
+        if (!text) return "";
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
 }); // End DOMContentLoaded
 
-function createConfetti(x, y) {
-    const confettiCount = 100;
-    const colors = ['#ffccdd', '#dd6688', '#cc3355', '#ffffff', '#ffeeff'];
+// Global Confetti (needed outside module scope if called via onclick, but we attach via JS listener)
+// We export nothing, just side effects.
+// But wait, createConfetti was global before. 
+// Since this is now a module, createConfetti is scoped. 
+// We should attach it to window if needed by HTML onclicks (none here, all JS).
+// But for safety:
+window.createConfetti = function (x, y) {
+    const confettiCount = 500;
+    const colors = ['#ffccdd', '#dd6688', '#cc3355', '#ffffff', '#ffeeff', '#ffd700'];
 
     for (let i = 0; i < confettiCount; i++) {
         const confetti = document.createElement('div');
         confetti.classList.add('confetti');
         document.body.appendChild(confetti);
 
-        // Random Position Spread
-        const spread = 200;
-        const dx = (Math.random() - 0.5) * spread;
-        const dy = (Math.random() - 0.5) * spread - 100; // Prefer upwards
+        const spreadX = window.innerWidth;
+        const spreadY = window.innerHeight;
 
-        // Random Styles
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 200 + Math.random() * 400;
+        const dx = Math.cos(angle) * velocity;
+        const dy = Math.sin(angle) * velocity - 200;
+
         confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
         confetti.style.left = `${x}px`;
         confetti.style.top = `${y}px`;
         confetti.style.transform = `translate(0,0) rotate(${Math.random() * 360}deg)`;
 
-        // Animate
         const animation = confetti.animate([
             { transform: `translate(0,0) rotate(0deg)`, opacity: 1 },
             { transform: `translate(${dx}px, ${dy}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
@@ -343,4 +413,4 @@ function createConfetti(x, y) {
 
         animation.onfinish = () => confetti.remove();
     }
-}
+};

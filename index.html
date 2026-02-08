@@ -8,7 +8,7 @@
     <title>wannabe crazy lover | Home</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="proposal.css">
 
     <!-- Font Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,6 +45,22 @@
         <section id="desktop"
             style="height: 100vh; display: flex; align-items: center; justify-content: center; position: relative;">
             <div class="container">
+                <!-- The Proposal Section -->
+                <div class="proposal-container"
+                    style="display: flex; justify-content: center; width: 100%; margin-bottom: 3rem;">
+                    <div id="proposal-btn" class="folder-item proposal-btn" style="transform-origin: center;">
+                        <div class="folder-icon proposal-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                </path>
+                            </svg>
+                        </div>
+                        <span class="folder-name proposal-text">The Proposal</span>
+                    </div>
+                </div>
+
                 <div class="folder-grid">
 
                     <!-- Folder 2 -->
@@ -108,12 +124,112 @@
         </section>
 
         <!-- Placeholder for scroll testing -->
-        <section style="height: 100vh; display: flex; align-items: center; justify-content: center;">
-            <h2 class="gradient-text" style="font-size: 3rem;">More coming soon.</h2>
         </section>
+
     </main>
 
-    <script src="main.js"></script>
+    <div id="proposal-flow" class="proposal-flow" style="display: none; opacity: 0;">
+        <!-- Part 1: The Letter -->
+        <div id="part-1-letter" class="flow-section letter-section">
+            <div class="letter-box">
+                <p class="letter-text" style="text-align: center;">
+                    Shreeya, I <em>Lohitaksh Khatri</em> am really in love with your heart, addicted to your beautiful
+                    adorable personality, and deeply obsessed with your talks, i cannot and will never be able to live
+                    without you, i want to be yours forever, give you all the rights on me, and make you mine forever, i
+                    have never felt the same for any other person on the planet, and i promise to keep this as exclusive
+                    as it is. I will always stay true to you, and i want to be your january, february, march, april,
+                    may, june, August, september, november and december. I am quite stupid, but please bear with me:)
+                </p>
+                <div class="scroll-hint-icon">↓</div>
+            </div>
+        </div>
+
+        <!-- Buffer 1 -->
+        <div class="flow-section buffer-section"></div>
+
+        <!-- Part 2: The Drumroll -->
+        <div id="part-2-drumroll" class="flow-section drumroll-section">
+            <div id="drum-emoji" class="drum-emoji">🥁</div>
+            <div id="drum-text" class="drum-text" style="opacity: 0;">
+                i am reallly reallly sooo in love with youuu, soooooooooo..............
+            </div>
+        </div>
+
+        <!-- Buffer 2 -->
+        <div class="flow-section buffer-section"></div>
+
+        <!-- Part 3: The Question -->
+        <div id="part-3-question" class="flow-section question-section">
+            <div class="question-container-wrapper">
+                <div id="question-text" class="question-text" style="opacity: 0; transform: scale(0.8);">
+                    <span class="text-gradient">Please be mine forever, let me adore you each day of my life, will
+                        you?</span> 🥺
+                </div>
+                <div class="question-buttons" style="opacity: 0; margin-top: 2rem;">
+                    <button id="btn-yes" class="btn btn-yes">Yes! 💖</button>
+                    <button id="btn-no" class="btn btn-no">no</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Part 4: The 'No' Reason (Initially Hidden) -->
+        <div id="part-no-reason" class="flow-section no-reason-section" style="display: none; opacity: 0;">
+            <div class="letter-box" style="max-width: 600px;">
+                <h3 style="margin-bottom: 1.5rem; color: #dd6688;">Why did you say no? 🥺</h3>
+                <textarea id="no-reason-input" placeholder="Please explain... (min 1000 words required)"
+                    style="width: 100%; height: 300px; padding: 1rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #fff; resize: none; font-family: inherit; margin-bottom: 1.5rem;"></textarea>
+
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button id="btn-submit-reason" class="btn"
+                        style="background: rgba(255,255,255,0.1);">Submit</button>
+                    <button id="btn-skip-reason" class="btn" style="background: rgba(255,255,255,0.2);">Skip</button>
+                </div>
+
+                <!-- Previous Inputs List -->
+                <div id="no-reasons-list"
+                    style="margin-top: 2rem; max-height: 200px; overflow-y: auto; text-align: left; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
+                    <h4 style="color: #dd6688; margin-bottom: 0.5rem; font-size: 0.9rem;">Previous Inputs:</h4>
+                    <div class="list-content" style="font-size: 0.8rem; color: #ddd;">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Part 5: The 'Yes' Follow-up (Initially Hidden) -->
+        <div id="part-5-comment" class="flow-section comment-section" style="display: none; opacity: 0;">
+            <div class="letter-box" style="max-width: 600px;">
+                <h3 style="margin-bottom: 1.5rem; color: #dd6688;">what would you like to say about this boy you keep
+                    fussing over? 😎</h3>
+                <textarea id="yes-comment-input" placeholder="Spill the tea..."
+                    style="width: 100%; height: 150px; padding: 1rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #fff; resize: none; font-family: inherit; margin-bottom: 1.5rem;"></textarea>
+
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button id="btn-submit-comment" class="btn" style="background: rgba(255,255,255,0.1);">Save</button>
+                </div>
+
+                <!-- Previous Comments List -->
+                <div id="yes-comments-list"
+                    style="margin-top: 2rem; max-height: 200px; overflow-y: auto; text-align: left; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
+                    <h4 style="color: #dd6688; margin-bottom: 0.5rem; font-size: 0.9rem;">Previous Inputs:</h4>
+                    <div class="list-content" style="font-size: 0.8rem; color: #ddd;">Loading...</div>
+                </div>
+
+                <!-- Back to Home Button -->
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <button class="btn" onclick="window.location.reload()"
+                        style="background: transparent; border: 1px solid rgba(255,255,255,0.2); font-size: 0.9rem; padding: 0.5rem 1.5rem; color: #aaa; cursor: pointer;">
+                        ← Home
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <!-- Firebase SDK (For Proposal) - Module Script needs to be in proposal.js or imported here. 
+         Since proposal.js is loaded as a standard script, we'll use module imports INSIDE a module script tag that exposes functions to window, 
+         OR convert proposal.js to a module. Converting proposal.js to module is cleaner. -->
+    <script type="module" src="proposal.js"></script>
     <!-- Flower Decorations -->
     <div class="flower-decorations">
         <!-- Left Cluster -->
@@ -161,6 +277,154 @@
             </g>
         </svg>
     </div>
+    <!-- Custom Cursor -->
+    <div id="custom-cursor">
+        <div class="cursor-ring"></div>
+        <div class="cursor-dot"></div>
+        <div class="cursor-line horizontal"></div>
+        <div class="cursor-line vertical"></div>
+    </div>
+
+    <style>
+        /* Hide Default Cursor */
+        body {
+            cursor: none;
+        }
+
+        /* Cursor Styles */
+        #custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 40px;
+            height: 40px;
+            pointer-events: none;
+            z-index: 999999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            /* Optional: visible on both dark/light */
+        }
+
+        .cursor-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            /* Changed to White Ring */
+            border-radius: 50%;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        .cursor-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 4px;
+            background: white;
+            /* Changed to White */
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-line {
+            position: absolute;
+            background: white;
+            /* Changed to White */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-line.horizontal {
+            width: 100%;
+            /* Full width of ring */
+            height: 1px;
+        }
+
+        .cursor-line.vertical {
+            width: 1px;
+            height: 100%;
+            /* Full height of ring */
+        }
+
+        .cursor-ring,
+        .cursor-dot,
+        .cursor-line {
+            transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Hover Effect Class */
+        #custom-cursor.hover-active .cursor-ring {
+            width: 60px;
+            height: 60px;
+            border-color: #dd6688;
+            border-width: 2px;
+            transform: translate(-10px, -10px);
+            /* Adjust for larger size (40->60 diff=20/2=10) */
+        }
+
+        #custom-cursor.hover-active .cursor-dot {
+            background: #dd6688;
+            width: 8px;
+            height: 8px;
+        }
+
+        #custom-cursor.hover-active .cursor-line {
+            display: none;
+            /* Hide crosshair on hover for cleaner look */
+        }
+    </style>
+
+    <script>
+        const cursor = document.getElementById('custom-cursor');
+
+        let mouseX = 0;
+        let mouseY = 0;
+        let cursorX = 0;
+        let cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // Add hover effect for interactive elements
+        document.addEventListener('mouseover', (e) => {
+            if (e.target.closest('a, button, .folder-item, input, textarea')) {
+                cursor.classList.add('hover-active');
+            } else {
+                cursor.classList.remove('hover-active');
+            }
+        });
+
+        document.addEventListener('mouseout', (e) => {
+            // Optional: remove if leaving window or element
+            // But simplistic remove on non-interactive is enough in mouseover
+        });
+
+        function animateCursor() {
+            // Smooth lerp
+            const dx = mouseX - cursorX;
+            const dy = mouseY - cursorY;
+
+            cursorX += dx * 0.15; // Slightly smoother lag
+            cursorY += dy * 0.15;
+
+            // We keep the container centered using translate(-50%, -50%)
+            // This allows us to use top/left for position without reflow if we wanted, 
+            // OR stick to transform for performance.
+            // Using transform: translate(X, Y) translate(-50%, -50%) works perfectly.
+            cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
+
+            requestAnimationFrame(animateCursor);
+        }
+
+        animateCursor();
+    </script>
 </body>
 
 </html>
