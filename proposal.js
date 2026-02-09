@@ -99,16 +99,55 @@ document.addEventListener('DOMContentLoaded', () => {
                         setTimeout(() => { header.style.display = 'none'; }, 500);
                     }
 
+                    // --- Flower Animation Sequence ---
                     setTimeout(() => {
-                        const proposalFlow = document.getElementById('proposal-flow');
-                        if (proposalFlow) {
-                            proposalFlow.style.display = 'block';
-                            setTimeout(() => {
-                                proposalFlow.style.opacity = '1';
-                                proposalFlow.style.transition = 'opacity 1s ease';
-                            }, 50);
+                        console.log("Starting flower animation sequence...");
+                        const flowerContainer = document.getElementById('flower-animation-container');
+                        const flower = document.querySelector('.flower');
 
-                            initProposalFlow();
+                        if (flowerContainer && flower) {
+                            console.log("Flower container found, showing...");
+                            flowerContainer.style.display = 'flex';
+                            // Trigger reflow
+                            void flowerContainer.offsetWidth;
+                            flowerContainer.style.opacity = '1';
+                            flower.classList.add('animate');
+
+                            // Wait for animation (e.g., 5 seconds)
+                            setTimeout(() => {
+                                console.log("Flower animation finished, hiding...");
+                                flowerContainer.style.opacity = '0';
+                                setTimeout(() => {
+                                    flowerContainer.style.display = 'none';
+                                    flower.classList.remove('animate');
+
+                                    // Proceed to original flow
+                                    const proposalFlow = document.getElementById('proposal-flow');
+                                    if (proposalFlow) {
+                                        console.log("Showing proposal flow...");
+                                        proposalFlow.style.display = 'block';
+                                        setTimeout(() => {
+                                            proposalFlow.style.opacity = '1';
+                                            proposalFlow.style.transition = 'opacity 1s ease';
+                                        }, 50);
+
+                                        initProposalFlow();
+                                    }
+                                }, 1000); // Fade out duration for flower container
+                            }, 8000); // Duration to show flower
+                        } else {
+                            console.error("Flower container NOT found!");
+                            // Fallback if flower elements missing
+                            const proposalFlow = document.getElementById('proposal-flow');
+                            if (proposalFlow) {
+                                proposalFlow.style.display = 'block';
+                                setTimeout(() => {
+                                    proposalFlow.style.opacity = '1';
+                                    proposalFlow.style.transition = 'opacity 1s ease';
+                                }, 50);
+
+                                initProposalFlow();
+                            }
                         }
                     }, 500);
                 }
