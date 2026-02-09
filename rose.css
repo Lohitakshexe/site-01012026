@@ -1,0 +1,383 @@
+/* Converted from SCSS */
+:root {
+    --bg-rose: #0e1a2d;
+    /* darken(#122139, 8%) */
+    --case: #122139;
+    --casebase: #a52a2a;
+    --pink1: #d52d58;
+    --pink2: #9e183a;
+    --pink3: #b81b43;
+    --pink4: #c9204b;
+    --green1: #338f37;
+    --green2: #055505;
+    /* darken(#066406, 5%) */
+}
+
+/* Container rename to avoid conflict */
+.rose-container {
+    position: fixed;
+    left: 50%;
+    bottom: 40px;
+    /* Slight padding from bottom */
+    width: 200px;
+    /* Match glass width */
+    height: 350px;
+    /* Match glass height */
+
+    /* Centering and Scaling */
+    transform: translateX(-50%) scale(0.6);
+    transform-origin: bottom center;
+
+    z-index: -1;
+    pointer-events: none;
+    overflow: visible;
+    /* Allow shine/glow to bleed out */
+}
+
+/* Ensure wrappers don't break layout - crucial fix for positioning context */
+.rose-container>div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glass {
+    height: 350px;
+    width: 200px;
+    background: var(--case);
+    border-radius: 300px 300px 0px 0px;
+    position: absolute;
+    /* Changed to absolute to fit container */
+    top: 0;
+    left: 0;
+}
+
+.glass:before {
+    content: "";
+    height: 10px;
+    width: 10px;
+    transform-origin: center;
+    border: 10px solid var(--case);
+    border-radius: 100%;
+    position: absolute;
+    left: 87px;
+    top: -25px;
+}
+
+.glass:after {
+    content: "";
+    position: absolute;
+    height: 15px;
+    width: 250px;
+    background: var(--casebase);
+    top: 100%;
+    /* Below the glass */
+    left: -13%;
+}
+
+.shine {
+    width: 12px;
+    height: 140px;
+    background: white;
+    opacity: 0.2;
+    position: absolute;
+    left: 85%;
+    top: 80px;
+    border-radius: 100px;
+    z-index: 10;
+}
+
+.shine:before {
+    content: "";
+    width: 12px;
+    height: 20px;
+    position: absolute;
+    background: white;
+    top: 160px;
+    border-radius: 100px;
+}
+
+.petals>div {
+    position: absolute;
+    background: var(--pink1);
+    width: 45px;
+    height: 80px;
+    top: 55px;
+    transition: all 0.5s ease-out;
+}
+
+.petals>div:nth-child(1) {
+    border-radius: 15px;
+    box-shadow: 0px 0px 30px rgba(245, 148, 184, 1);
+    left: 80px;
+    top: 60px;
+    background: var(--pink1);
+}
+
+.petals>div:nth-child(2),
+.petals>div:nth-child(4),
+.petals>div:nth-child(6) {
+    background: var(--pink3);
+    left: 60px;
+    border-radius: 0px 30px 0px 30px;
+    transform-origin: bottom right;
+}
+
+.petals>div:nth-child(3),
+.petals>div:nth-child(5),
+.petals>div:nth-child(7) {
+    background: var(--pink3);
+    left: 100px;
+    border-radius: 30px 0px 30px 0px;
+    transform-origin: bottom left;
+}
+
+/* Unrolled Loop 2 to 8 */
+/* i=2 */
+.petals>div:nth-child(2) {
+    z-index: 5;
+    background: #a31c3f;
+    /* lighten(pink2, 3%) approx */
+    top: 75px;
+    height: 70px;
+    box-shadow: 0px 0px 50px rgba(245, 148, 184, .5);
+    animation: bloom2 3s ease-in-out forwards;
+}
+
+/* i=3 */
+.petals>div:nth-child(3) {
+    z-index: 4;
+    background: #a31c3f;
+    top: 75px;
+    height: 70px;
+    box-shadow: 0px 0px 50px rgba(245, 148, 184, .5);
+    animation: bloom3 3s ease-in-out forwards, glowing 2.5s ease-in-out infinite;
+}
+
+/* i=4 */
+.petals>div:nth-child(4) {
+    z-index: 3;
+    background: var(--pink3);
+    top: 70px;
+    height: 75px;
+    box-shadow: 0px 0px 50px rgba(245, 148, 184, .5);
+    animation: bloom4 3s ease-in-out forwards, glowing 2.5s ease-in-out infinite;
+}
+
+/* i=5 */
+.petals>div:nth-child(5) {
+    z-index: 2;
+    background: var(--pink3);
+    top: 70px;
+    height: 75px;
+    box-shadow: 0px 0px 50px rgba(245, 148, 184, .5);
+    animation: bloom5 3s ease-in-out forwards, glowing 2.5s ease-in-out infinite;
+}
+
+/* i=6 */
+.petals>div:nth-child(6) {
+    z-index: 1;
+    background: var(--pink4);
+    top: 65px;
+    height: 70px;
+    box-shadow: 0px 0px 50px rgba(245, 148, 184, .3);
+    animation: bloom6 3s ease-in-out forwards, glowing 2.5s ease-in-out infinite;
+}
+
+/* i=7 */
+.petals>div:nth-child(7) {
+    z-index: 0;
+    background: var(--pink4);
+    top: 65px;
+    height: 70px;
+    box-shadow: 0px 0px 50px rgba(245, 148, 184, .3);
+    animation: bloom7 3s ease-in-out forwards, glowing 2.5s ease-in-out infinite;
+}
+
+.deadPetals>div {
+    position: absolute;
+    background: var(--pink1);
+    width: 20px;
+    height: 15px;
+    top: 120px;
+    border-radius: 0px 30px 0px 30px;
+    box-shadow: 0px 0px 30px rgba(245, 148, 184, .5);
+    transition: all 0.5s ease-out;
+}
+
+/* Loop unrolled for deadPetals */
+.deadPetals>div:nth-child(1) {
+    left: 80px;
+    /* randomNum(60, 120) */
+    transform: rotate(-30deg);
+    animation: falling 20s 4s ease-in-out infinite;
+}
+
+.deadPetals>div:nth-child(2) {
+    left: 100px;
+    transform: rotate(-30deg);
+    animation: falling 20s 8s ease-in-out infinite;
+}
+
+.deadPetals>div:nth-child(3) {
+    left: 65px;
+    transform: rotate(-30deg);
+    animation: falling 20s 12s ease-in-out infinite;
+}
+
+.deadPetals>div:nth-child(4) {
+    left: 110px;
+    transform: rotate(-30deg);
+    animation: falling 20s 16s ease-in-out infinite;
+}
+
+.leaves>div:nth-last-child(1) {
+    position: absolute;
+    width: 55px;
+    height: 30px;
+    background: var(--green1);
+    top: 120px;
+    left: 75px;
+    border-radius: 100px;
+}
+
+.leaves>div:nth-child(1) {
+    position: absolute;
+    width: 6px;
+    height: 210px;
+    background: var(--green2);
+    top: 95px;
+    left: 100px;
+    border-radius: 0 0 100px 100px;
+}
+
+.leaves>div:nth-child(2) {
+    position: absolute;
+    width: 30px;
+    height: 50px;
+    border-radius: 5px 40px 20px 40px;
+    background: var(--green2);
+    transform-origin: bottom;
+    transform: rotate(-30deg);
+    top: 180px;
+    left: 80px;
+    box-shadow: inset 5px 5px #077007;
+    /* lighten(green2, 5%) */
+}
+
+.leaves>div:nth-child(3) {
+    position: absolute;
+    width: 30px;
+    height: 50px;
+    border-radius: 40px 5px 40px 20px;
+    background: var(--green2);
+    transform-origin: bottom;
+    transform: rotate(30deg);
+    top: 150px;
+    left: 95px;
+    box-shadow: inset -5px 5px #077007;
+}
+
+.thorns>div {
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: 140px;
+}
+
+.thorns>div:nth-child(odd) {
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 5px solid var(--green2);
+    left: 105px;
+}
+
+.thorns>div:nth-child(even) {
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-right: 5px solid var(--green2);
+    left: 95px;
+}
+
+.thorns>div:nth-child(1) {
+    top: 200px;
+}
+
+.thorns>div:nth-child(2) {
+    top: 170px;
+}
+
+.thorns>div:nth-child(4) {
+    top: 230px;
+}
+
+@keyframes bloom2 {
+    50% {
+        transform: rotate(-90deg);
+        top: 200px;
+        left: 100px;
+    }
+
+    100% {
+        transform: rotate(-60deg);
+        top: 252px;
+        left: 50px;
+        background: #a11a3c;
+        /* darken(pink4, 20%) */
+        box-shadow: 0px 0px 0px rgba(245, 148, 184, 0);
+    }
+}
+
+@keyframes bloom3 {
+    100% {
+        transform: rotate(45deg);
+    }
+}
+
+@keyframes bloom4 {
+    100% {
+        transform: rotate(-20deg);
+    }
+}
+
+@keyframes bloom5 {
+    100% {
+        transform: rotate(20deg);
+    }
+}
+
+@keyframes bloom6 {
+    100% {
+        transform: rotate(-5deg);
+    }
+}
+
+@keyframes bloom7 {
+    100% {
+        transform: rotate(5deg);
+    }
+}
+
+@keyframes glowing {
+    50% {
+        background: #da3e66;
+        /* lighten(pink1, 2%) */
+        box-shadow: 0px 0px 60px rgba(245, 148, 184, 1);
+    }
+}
+
+@keyframes falling {
+    20% {
+        top: 335px;
+        background: #a11a3c;
+        /* darken(pink4, 10%) */
+        box-shadow: 0px 0px 0px rgba(245, 148, 184, 0);
+    }
+
+    100% {
+        top: 335px;
+        opacity: 0;
+    }
+}
