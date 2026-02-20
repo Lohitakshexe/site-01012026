@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wannabe crazy lover | Login</title>
+    <!-- Font Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #fff;
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .ambient-light {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80vw;
+            height: 80vw;
+            max-width: 800px;
+            max-height: 800px;
+            background: radial-gradient(circle, rgba(221, 102, 136, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+            animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+            margin-bottom: 2rem;
+            color: #fff;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ffb6c1, #dd6688);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .login-input:focus {
+            border-color: #dd6688;
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 15px rgba(221, 102, 136, 0.2) inset;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #e67399, #cc5577);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+            margin-top: 1rem;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(221, 102, 136, 0.3);
+            filter: brightness(1.1);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            margin-top: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            min-height: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ambient-light"></div>
+    <div class="login-container">
+        <div class="login-logo">
+            wannabe <span class="gradient-text">crazy lover</span>
+        </div>
+
+        <form id="login-form">
+            <div class="input-group">
+                <label for="login-id">Secret ID</label>
+                <input type="text" id="login-id" class="login-input" placeholder="Enter ID" required autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label for="login-pass">Password</label>
+                <input type="password" id="login-pass" class="login-input" placeholder="Enter password" required>
+            </div>
+
+            <button type="submit" class="login-btn">Get Through</button>
+            <div id="error-msg" class="error-message">Incorrect ID or Password</div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const id = document.getElementById('login-id').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
+            const errorMsg = document.getElementById('error-msg');
+            const submitBtn = document.querySelector('.login-btn');
+
+            if ((id === 'lohitaksh loves Shreeya more' && pass === 'inarguably') || (id === 'Shreeya' && pass === 'shreeya')) {
+                sessionStorage.setItem('authenticated', 'true');
+
+                // Success State
+                submitBtn.innerText = "Access Granted";
+                submitBtn.style.background = "#4CAF50";
+                errorMsg.style.opacity = '0';
+
+                const container = document.querySelector('.login-container');
+                container.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease';
+                container.style.transform = 'scale(0.95)';
+                container.style.opacity = '0';
+
+                setTimeout(() => {
+                    const params = new URLSearchParams(window.location.search);
+                    const redirectTo = params.get('redirect') || 'index.html';
+                    window.location.href = redirectTo;
+                }, 500);
+            } else {
+                errorMsg.style.opacity = '1';
+
+                // Shake effect for error
+                const container = document.querySelector('.login-container');
+                container.style.transition = 'none';
+                container.style.transform = 'translateX(-10px)';
+                setTimeout(() => { container.style.transform = 'translateX(10px)'; }, 50);
+                setTimeout(() => { container.style.transform = 'translateX(-10px)'; }, 100);
+                setTimeout(() => { container.style.transform = 'translateX(10px)'; }, 150);
+                setTimeout(() => {
+                    container.style.transition = 'transform 0.3s ease-out';
+                    container.style.transform = 'translateX(0)';
+                }, 200);
+
+                setTimeout(() => {
+                    errorMsg.style.opacity = '0';
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+
+</html>
