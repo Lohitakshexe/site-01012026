@@ -9,3 +9,5 @@ venv/
 *.log
 .vscode/
 .idea/
+node_modules/
+dist/
