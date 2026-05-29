@@ -226,8 +226,48 @@ body {
     animation-delay: 3.3s;
 }
 
+.folder-item:nth-child(5) {
+    animation-delay: 3.4s;
+}
+
 .folder-item:hover {
     transform: translateY(-10px);
+}
+
+/* Extravagance for 'a little poem' folder */
+.folder-item:nth-child(5) .folder-icon {
+    border-color: rgba(225, 29, 72, 0.15);
+    box-shadow: 0 4px 20px rgba(225, 29, 72, 0.05);
+}
+
+.folder-item:nth-child(5):hover .folder-icon {
+    background: rgba(225, 29, 72, 0.05);
+    border-color: rgba(225, 29, 72, 0.5);
+    box-shadow: 0 10px 30px rgba(225, 29, 72, 0.4), 
+                inset 0 0 15px rgba(225, 29, 72, 0.1);
+}
+
+.folder-item:nth-child(5):hover .folder-icon svg {
+    color: #e11d48;
+    animation: folderHeartbeat 1.4s ease-in-out infinite;
+}
+
+@keyframes folderHeartbeat {
+    0% {
+        transform: scale(1);
+    }
+    14% {
+        transform: scale(1.12);
+    }
+    28% {
+        transform: scale(1);
+    }
+    42% {
+        transform: scale(1.12);
+    }
+    70% {
+        transform: scale(1);
+    }
 }
 
 .folder-icon {
